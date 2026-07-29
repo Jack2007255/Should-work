@@ -1,0 +1,254 @@
+/* ==========================================================================
+   MINI concept site — shared styles
+   ========================================================================== */
+
+:root{
+  --ink:#0a0a0a;
+  --paper:#ffffff;
+  --muted:#6b6b6b;
+  --line:#e4e4e4;
+  --accent:#e8ec2f;        /* MINI electric yellow */
+  --racing:#0d4a2b;        /* british racing green */
+  --pad:clamp(1.25rem, 5vw, 5rem);
+  --font:"Helvetica Neue", Helvetica, Arial, sans-serif;
+  --bar:4.2rem;            /* fixed header height */
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--font); font-size:16px; line-height:1.55;
+  overflow-x:hidden;
+}
+img,video,svg{display:block; max-width:100%}
+a{color:inherit; text-decoration:none}
+
+/* ---------------- type ---------------- */
+.display{
+  font-weight:800; letter-spacing:-.045em; line-height:.9;
+  text-transform:uppercase; margin:0;
+}
+.eyebrow{
+  font-size:.7rem; letter-spacing:.28em; text-transform:uppercase;
+  font-weight:700; color:var(--muted); margin:0 0 1.25rem;
+}
+.lede{font-size:clamp(1rem,1.6vw,1.2rem); color:var(--muted); max-width:46ch}
+
+/* ---------------- header ---------------- */
+header{
+  position:fixed; inset:0 0 auto 0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.1rem var(--pad); color:#fff;
+  transition:background .35s ease, color .35s ease, box-shadow .35s ease;
+}
+header.is-stuck{
+  background:rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);   /* Safari needs the prefix */
+  backdrop-filter:blur(14px) saturate(140%);
+  color:var(--ink); box-shadow:0 1px 0 var(--line);
+}
+/* pages without a dark hero start solid */
+header.is-solid{
+  background:rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);   /* Safari needs the prefix */
+  backdrop-filter:blur(14px) saturate(140%);
+  color:var(--ink); box-shadow:0 1px 0 var(--line);
+}
+.wordmark{font-weight:800; font-size:1.05rem; letter-spacing:.34em; text-transform:uppercase}
+.tagline{font-size:.72rem; letter-spacing:.2em; font-weight:800; text-transform:uppercase}
+nav{display:flex; gap:2rem; font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; font-weight:600}
+nav a{opacity:.85; transition:opacity .2s}
+nav a:hover,nav a[aria-current="page"]{opacity:1}
+nav a[aria-current="page"]{text-decoration:underline; text-underline-offset:6px}
+@media (max-width:880px){ nav{display:none} }
+
+/* ---------------- buttons ---------------- */
+.btn{
+  display:inline-flex; align-items:center; gap:.7rem;
+  background:var(--accent); color:#0a0a0a;
+  padding:.95rem 1.7rem; border-radius:999px;
+  font-weight:700; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase;
+  border:0; cursor:pointer; transition:transform .2s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn--ghost{background:transparent; color:#fff; box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.5)}
+.btn--ghost:hover{background:rgba(255,255,255,.1)}
+.btn--dark{background:var(--ink); color:#fff}
+
+/* ---------------- video / scene stage ---------------- */
+.stage{position:relative; isolation:isolate; overflow:hidden}
+.stage__media{position:absolute; inset:0; z-index:-2}
+/* the hand-built SVG scene is the real background; a generated clip, when
+   wired in, simply layers on top of it */
+.stage__media .scene{position:absolute; inset:0; width:100%; height:100%}
+/* photo layer: sits above the SVG scene, below any video. A photo that fails
+   to load is hidden by the onerror handler, revealing the scene again. */
+.stage__media img{
+  position:absolute; inset:0; z-index:1;
+  width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .9s ease;
+}
+.stage__media img.is-ready{opacity:1}
+.stage__media video{z-index:2}
+.stage__media video{
+  position:absolute; inset:0; z-index:1;
+  width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity 1.2s ease;
+}
+.stage__media video.is-ready{opacity:1}
+.stage__scrim{
+  position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,.2) 45%, rgba(0,0,0,.72) 100%);
+}
+/* the feature block carries a heading, body copy and four stats over a busy
+   scene, so it needs a heavier, flatter scrim than the hero does */
+.feature .stage__scrim{
+  background:linear-gradient(180deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.58) 50%, rgba(0,0,0,.8) 100%);
+}
+
+/* ---------------- hero ---------------- */
+.hero{
+  min-height:100vh;    /* fallback first — svh is Safari 15.4+ */
+  min-height:100svh;
+  display:flex; align-items:flex-end;
+  padding:0 var(--pad) clamp(2.5rem,6vh,5rem); color:#fff;
+}
+.hero__inner{width:100%; max-width:1400px; margin:0 auto}
+.hero h1{font-size:clamp(3.2rem,13vw,11rem)}
+.hero h1 span{display:block}
+.hero h1 .thin{font-weight:300; letter-spacing:-.03em}
+.hero__row{display:flex; flex-wrap:wrap; gap:2rem; align-items:end; justify-content:space-between; margin-top:2.5rem}
+.hero .lede{color:rgba(255,255,255,.8)}
+.scroll-cue{
+  /* transform rather than the standalone translate property, which is newer
+     in Safari than the rest of what this page relies on */
+  position:absolute; left:50%; bottom:1.5rem; transform:translateX(-50%);
+  width:1px; height:52px; background:linear-gradient(180deg,transparent,rgba(255,255,255,.7));
+}
+
+/* ---------------- page banner (interior pages) ---------------- */
+.banner{
+  padding:calc(var(--bar) + clamp(3rem,8vh,6rem)) var(--pad) clamp(2.5rem,6vh,4rem);
+  border-bottom:1px solid var(--line);
+}
+.banner h1{font-size:clamp(2.4rem,7vw,5.5rem)}
+
+/* ---------------- marquee ---------------- */
+.marquee{background:var(--ink); color:#fff; padding:.85rem 0; overflow:hidden; white-space:nowrap}
+.marquee__track{display:inline-flex; gap:3rem; animation:slide 26s linear infinite}
+.marquee span{
+  font-size:.78rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
+  display:inline-flex; gap:3rem; align-items:center;
+}
+.marquee span::after{content:"◍"; color:var(--accent)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ---------------- sections ---------------- */
+section{padding:clamp(4rem,10vh,8rem) var(--pad)}
+section[id],.feature[id]{scroll-margin-top:var(--bar)}
+.wrap{max-width:1400px; margin:0 auto}
+.section-head{display:flex; flex-wrap:wrap; gap:2rem 3rem; justify-content:space-between; align-items:end; margin-bottom:3.5rem}
+.section-head h2{font-size:clamp(2rem,5.5vw,4.4rem)}
+
+/* ---------------- model cards ---------------- */
+.lineup{display:grid; gap:1.5rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.card{
+  position:relative; border:1px solid var(--line); border-radius:1.25rem;
+  overflow:hidden; background:#fafafa; display:flex; flex-direction:column;
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.card:hover{transform:translateY(-6px); box-shadow:0 24px 50px -24px rgba(0,0,0,.35)}
+.card__art{aspect-ratio:4/3; position:relative; overflow:hidden}
+.card__art .scene{position:absolute; inset:0; width:100%; height:100%}
+.card__art img{
+  position:absolute; inset:0; z-index:1;
+  width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .9s ease;
+}
+.card__art img.is-ready{opacity:1}
+.card__art video{position:absolute; inset:0; z-index:2; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .9s}
+.card__art video.is-ready{opacity:1}
+.card__badge{
+  position:absolute; top:.9rem; left:.9rem; z-index:2;
+  background:#fff; color:var(--ink); border-radius:999px;
+  padding:.3rem .75rem; font-size:.62rem; font-weight:800;
+  letter-spacing:.16em; text-transform:uppercase;
+}
+.card__body{padding:1.4rem 1.5rem 1.7rem; display:flex; flex-direction:column; flex:1}
+.card__body h3{margin:0 0 .3rem; font-size:1.15rem; letter-spacing:-.01em}
+.card__body > p{margin:0 0 1.1rem; color:var(--muted); font-size:.9rem}
+/* margin-top:auto holds every spec row on a shared baseline regardless of
+   how many lines the description above it runs to */
+.card__spec{
+  display:flex; gap:1.25rem; margin-top:auto; padding-top:1.1rem;
+  border-top:1px solid var(--line); font-size:.72rem; color:var(--muted);
+}
+.card__spec b{display:block; color:var(--ink); font-size:1rem; letter-spacing:-.02em}
+
+/* ---------------- spec table ---------------- */
+.table-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:1rem}
+table{border-collapse:collapse; width:100%; min-width:720px; font-size:.9rem}
+caption{text-align:left; padding:1rem 1.25rem; color:var(--muted); font-size:.82rem}
+th,td{padding:.9rem 1.25rem; text-align:left; border-bottom:1px solid var(--line)}
+thead th{
+  font-size:.66rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--muted); background:#fafafa; position:sticky; top:0;
+}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fcfcf4}
+td.model{font-weight:700}
+.pill{
+  display:inline-block; border-radius:999px; padding:.2rem .6rem;
+  font-size:.64rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+  background:#f0f0f0; color:#444;
+}
+.pill--ev{background:var(--accent); color:#0a0a0a}
+.pill--jcw{background:var(--racing); color:#fff}
+
+/* ---------------- split feature ---------------- */
+.feature{
+  min-height:80vh;   /* fallback first — see .hero */
+  min-height:80svh;
+  display:flex; align-items:center; color:#fff; padding:clamp(4rem,10vh,7rem) var(--pad);
+}
+.feature__inner{max-width:1400px; margin:0 auto; width:100%}
+.feature h2{font-size:clamp(2.2rem,7vw,6rem); max-width:18ch}
+.feature .lede{color:rgba(255,255,255,.78); margin-top:1.5rem}
+.stat-row{display:grid; gap:1.5rem; margin-top:3.5rem; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); max-width:900px}
+.stat{border-top:1.5px solid rgba(255,255,255,.35); padding-top:1rem}
+.stat b{display:block; font-size:clamp(1.7rem,4vw,2.7rem); font-weight:800; letter-spacing:-.04em}
+.stat span{font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.68)}
+
+/* ---------------- heritage ---------------- */
+.heritage{background:var(--ink); color:#fff}
+.timeline{display:grid; gap:2.5rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.tl__year{font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; letter-spacing:-.04em; color:var(--accent)}
+.tl p{color:rgba(255,255,255,.72); font-size:.92rem; margin:.4rem 0 0}
+
+/* ---------------- cta ---------------- */
+.cta{text-align:center; background:var(--accent)}
+.cta h2{font-size:clamp(2.2rem,8vw,6.5rem); margin-bottom:1.5rem}
+.cta .lede{margin:0 auto 2.5rem; color:rgba(0,0,0,.68)}
+
+/* ---------------- footer ---------------- */
+footer{background:var(--ink); color:rgba(255,255,255,.62); padding:3.5rem var(--pad) 2rem; font-size:.82rem}
+.foot-grid{max-width:1400px; margin:0 auto; display:grid; gap:2.5rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.foot-grid h4{color:#fff; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; margin:0 0 1rem}
+.foot-grid a{display:block; padding:.25rem 0; transition:color .2s}
+.foot-grid a:hover{color:#fff}
+.disclaimer{
+  max-width:1400px; margin:3rem auto 0; padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,.15); font-size:.72rem; color:rgba(255,255,255,.48);
+}
+
+/* ---------------- reveal ---------------- */
+.reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease}
+.reveal.in{opacity:1; transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .marquee__track{animation:none}
+  .reveal{opacity:1; transform:none; transition:none}
+  .card:hover,.btn:hover{transform:none}
+}

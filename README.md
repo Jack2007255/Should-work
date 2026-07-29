@@ -34,6 +34,32 @@ lazy-load as they near the viewport, and a failed or autoplay-blocked video
 falls back to its scene rather than showing an empty box. All keys are currently
 `null` — see `VIDEO-PROMPTS.md` to generate them.
 
+### Using real photography
+
+`site.js` also exposes a `PHOTOS` object with the same keys. A path or URL there
+shows a real photo instead of the illustration, layered above the SVG and below
+any video:
+
+```js
+const PHOTOS = { hero: 'img/cooper-coast.jpg', cooper3: null, … };
+```
+
+A photo that fails to load removes itself and the illustration shows through, so
+a wrong path degrades quietly.
+
+Only use images you have the right to use — licensed stock, or Creative Commons
+and public-domain files with the attribution their licence requires (add it to
+the footer credit line). Manufacturer press and marketing photography is
+copyrighted and is not automatically reusable, even for a mockup.
+
+### Browser support
+
+Tested in Chromium. Written to work in Safari specifically: `-webkit-`
+prefixed `backdrop-filter`, `vh` fallbacks ahead of every `svh` value, and
+`transform: translateX()` rather than the newer standalone `translate`
+property. `playsinline` and `muted` are set before `src` so iOS Safari will
+autoplay any clip that gets wired in.
+
 ### Current models
 
 `models.html` lists the range as six nameplates across three body styles —

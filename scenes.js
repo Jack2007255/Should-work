@@ -12,16 +12,39 @@
 function car(body, roof, wheel = '#141414') {
   return `
     <g class="car">
-      <path d="M14,74 L14,50 Q14,44 22,42 L62,40 L84,16 Q88,12 96,12 L150,12
-               Q158,12 162,17 L182,40 L198,43 Q206,45 206,52 L206,74 Z"
-            fill="${body}"/>
-      <path d="M88,20 Q90,18 96,18 L148,18 Q153,18 156,21 L168,39 L72,39 Z"
-            fill="${roof}" opacity=".55"/>
-      <rect x="86" y="11" width="72" height="7" rx="3.5" fill="${roof}"/>
-      <circle cx="52" cy="74" r="18" fill="${wheel}"/>
-      <circle cx="52" cy="74" r="8" fill="${body}" opacity=".7"/>
+      <ellipse cx="110" cy="86" rx="98" ry="6" fill="#000" opacity=".2"/>
+
+      <!-- body: short overhangs, upright screen, wheels at the extremes -->
+      <path d="M10,70 C10,58 13,52 24,49 L60,43 L82,19 C87,13 93,10 102,10
+               L145,10 C155,10 162,13 167,19 L187,43 L199,49
+               C209,52 212,58 212,70 L212,75 C212,79 209,81 204,81
+               L18,81 C13,81 10,75 10,70 Z" fill="${body}"/>
+
+      <!-- contrast roof, the one styling cue nobody mistakes -->
+      <path d="M84,20 C89,13 95,10 103,10 L145,10 C154,10 160,13 165,20 Z" fill="${roof}"/>
+      <rect x="88" y="7" width="70" height="6" rx="3" fill="${roof}"/>
+
+      <!-- glazing and door split -->
+      <path d="M72,41 L90,22 C92,19 96,18 101,18 L143,18 C148,18 151,20 153,23
+               L165,41 Z" fill="#243040" opacity=".9"/>
+      <line x1="118" y1="19" x2="118" y2="41" stroke="${body}" stroke-width="3" opacity=".85"/>
+
+      <path d="M74,36 l-9,2 v5 h9 z" fill="${body}"/>            <!-- mirror -->
+      <line x1="24" y1="60" x2="200" y2="58" stroke="#000" stroke-width="1.5" opacity=".16"/>
+      <rect x="122" y="50" width="12" height="3.5" rx="1.75" fill="#000" opacity=".28"/>
+
+      <circle cx="18" cy="53" r="6.5" fill="#ffeccc" opacity=".95"/> <!-- headlight -->
+      <rect x="203" y="48" width="8" height="9" rx="2" fill="#d94b3a"/>
+
+      <!-- arches and alloys -->
+      <path d="M30,74 a22,22 0 0 1 44,0" fill="none" stroke="#111" stroke-width="5" opacity=".45"/>
+      <path d="M148,74 a22,22 0 0 1 44,0" fill="none" stroke="#111" stroke-width="5" opacity=".45"/>
+      <circle cx="52"  cy="74" r="18" fill="${wheel}"/>
+      <circle cx="52"  cy="74" r="9"  fill="#cfd4d8"/>
+      <circle cx="52"  cy="74" r="3"  fill="${wheel}"/>
       <circle cx="170" cy="74" r="18" fill="${wheel}"/>
-      <circle cx="170" cy="74" r="8" fill="${body}" opacity=".7"/>
+      <circle cx="170" cy="74" r="9"  fill="#cfd4d8"/>
+      <circle cx="170" cy="74" r="3"  fill="${wheel}"/>
     </g>`;
 }
 

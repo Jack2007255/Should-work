@@ -44,12 +44,14 @@ header{
 }
 header.is-stuck{
   background:rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);   /* Safari needs the prefix */
   backdrop-filter:blur(14px) saturate(140%);
   color:var(--ink); box-shadow:0 1px 0 var(--line);
 }
 /* pages without a dark hero start solid */
 header.is-solid{
   background:rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);   /* Safari needs the prefix */
   backdrop-filter:blur(14px) saturate(140%);
   color:var(--ink); box-shadow:0 1px 0 var(--line);
 }
@@ -80,6 +82,15 @@ nav a[aria-current="page"]{text-decoration:underline; text-underline-offset:6px}
 /* the hand-built SVG scene is the real background; a generated clip, when
    wired in, simply layers on top of it */
 .stage__media .scene{position:absolute; inset:0; width:100%; height:100%}
+/* photo layer: sits above the SVG scene, below any video. A photo that fails
+   to load is hidden by the onerror handler, revealing the scene again. */
+.stage__media img{
+  position:absolute; inset:0; z-index:1;
+  width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .9s ease;
+}
+.stage__media img.is-ready{opacity:1}
+.stage__media video{z-index:2}
 .stage__media video{
   position:absolute; inset:0; z-index:1;
   width:100%; height:100%; object-fit:cover;
@@ -98,7 +109,9 @@ nav a[aria-current="page"]{text-decoration:underline; text-underline-offset:6px}
 
 /* ---------------- hero ---------------- */
 .hero{
-  min-height:100svh; display:flex; align-items:flex-end;
+  min-height:100vh;    /* fallback first — svh is Safari 15.4+ */
+  min-height:100svh;
+  display:flex; align-items:flex-end;
   padding:0 var(--pad) clamp(2.5rem,6vh,5rem); color:#fff;
 }
 .hero__inner{width:100%; max-width:1400px; margin:0 auto}
@@ -108,7 +121,9 @@ nav a[aria-current="page"]{text-decoration:underline; text-underline-offset:6px}
 .hero__row{display:flex; flex-wrap:wrap; gap:2rem; align-items:end; justify-content:space-between; margin-top:2.5rem}
 .hero .lede{color:rgba(255,255,255,.8)}
 .scroll-cue{
-  position:absolute; left:50%; bottom:1.5rem; translate:-50% 0;
+  /* transform rather than the standalone translate property, which is newer
+     in Safari than the rest of what this page relies on */
+  position:absolute; left:50%; bottom:1.5rem; transform:translateX(-50%);
   width:1px; height:52px; background:linear-gradient(180deg,transparent,rgba(255,255,255,.7));
 }
 
@@ -146,7 +161,13 @@ section[id],.feature[id]{scroll-margin-top:var(--bar)}
 .card:hover{transform:translateY(-6px); box-shadow:0 24px 50px -24px rgba(0,0,0,.35)}
 .card__art{aspect-ratio:4/3; position:relative; overflow:hidden}
 .card__art .scene{position:absolute; inset:0; width:100%; height:100%}
-.card__art video{position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .9s}
+.card__art img{
+  position:absolute; inset:0; z-index:1;
+  width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .9s ease;
+}
+.card__art img.is-ready{opacity:1}
+.card__art video{position:absolute; inset:0; z-index:2; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .9s}
 .card__art video.is-ready{opacity:1}
 .card__badge{
   position:absolute; top:.9rem; left:.9rem; z-index:2;
@@ -186,7 +207,11 @@ td.model{font-weight:700}
 .pill--jcw{background:var(--racing); color:#fff}
 
 /* ---------------- split feature ---------------- */
-.feature{min-height:80svh; display:flex; align-items:center; color:#fff; padding:clamp(4rem,10vh,7rem) var(--pad)}
+.feature{
+  min-height:80vh;   /* fallback first — see .hero */
+  min-height:80svh;
+  display:flex; align-items:center; color:#fff; padding:clamp(4rem,10vh,7rem) var(--pad);
+}
 .feature__inner{max-width:1400px; margin:0 auto; width:100%}
 .feature h2{font-size:clamp(2.2rem,7vw,6rem); max-width:18ch}
 .feature .lede{color:rgba(255,255,255,.78); margin-top:1.5rem}
